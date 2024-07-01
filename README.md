@@ -6,6 +6,8 @@ Code used to train a tropical geometry fuzzy neural network to predict adverse c
 
 The MIMIC-III database is a public de-identified dataset of 53,423 ICU encounters from 38,597 adult patients at Beth Israel Deaconess Medical Center in Boston, USA, from 2001-2012. Each encounter includes comprehensive data on medications, diagnoses, procedures, laboratory tests, vitals, and patient demographics. Researchers have used MIMIC-III to investigate a range of clinical outcomes and relationships, including chronic heart disease.
 
+![image](image.png)
+
 ### Data Preprocessing and Experiments
 We selected a cohort of adult patients (18-89 years old) with chronic heart disease (ICD9 codes 428.0 and 414.01) whose first ICU encounter lasted between 12 hours and 10 days. For consistency, we only used encounters recorded in the MetaVision electronic health record system. The resulting cohort of 2,717 patients contains 796 (29%) patients that either returned to the ICU within one year and underwent a serious cardiac procedure or died. The other 1,941 (71%) patients had no such recorded event within a year. See Table I for a statistical overview of the cohort.
 

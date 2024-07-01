@@ -16,6 +16,15 @@ To prioritize the most relevant variables, we used several approaches. First, we
 We performed 3-fold cross validation to tune the hyperparameters of the TGFNN, logistic regression, and random forest models.
 
 ### Topical Geometry Fuzzy Neural Network
+The TGFNN is a neural network developed by Yao et al. that employs fuzzy logic and tropical geometry to create an interpretable and flexible classifier [12]. We use this model because it performs well and learns interpretable, predictive rules. Specifically, the TGFNN can model imprecise medical concepts like “low blood pressure” using a fuzzy framework. Model interpretability is important in healthcare settings for clinical validation and implementation. For a full description of the TGFNN, see (original publication)[https://pubmed.ncbi.nlm.nih.gov/36194714/].
+
+We briefly describe the structure of the TGFNN here. The network consists of three modules: the encoding module, the rule module, and the inference module.
+The encoding module consists of a single layer that maps each continuous input variable to three fuzzy concepts: low, medium, and high. Variable-concept memberships values are in the range [0,1]. The concept-membership functions are learned during training. A trainable parameter controls the smoothness of the functions using tropical geometry to interpolate between piecewise linear and smooth operations. Categorical variables are one-hot encoded into concepts.
+
+The rule module learns the predictive rules and contains two layers. The first layer learns an attention matrix A that contains the contribution of each variables’ concepts to each rule. The second layer learns a connection matrix M that defines the rules by learning the importance of each variable to each rule. All matrix weights are in range [0,1] due to a hyperbolic tangent activation function. The module has an output for every rule, which is computed using the norm and tropical geometry to interpolate between product minimum operations.
+
+The inference module is a fully connected layer with a node for every output class. Learned weights correspond to the contribution of rules to the output class.
+We can extract the predictive rules by (1) computing the product of A and M and (2) extracting their weights in the inference layer. For example, a rule may be interpreted as “if x1 is high and x2 is low, predict class c.” The TGFNN is trained using a loss function that summates the standard cross-entropy loss, a rule sparsity-enforcing term, a rule correlation-penalizing term, and novel rule contradiction-penalizing term. The rule contradiction term ensures that not all concepts of a variable are important within a rule by computing the L1-norm of the minimum concept importance scores across all variables and rules. We trained the network with the Adam optimizer and backpropagation. We implemented the TGFNN in Pytorch 2.0 using Python 3.9.
 
 ## Running the Code
 ### Worflow
